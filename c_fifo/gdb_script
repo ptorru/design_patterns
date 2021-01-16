@@ -1,0 +1,12 @@
+# Set a breakpoint
+break fifo_put
+
+# run the program
+r
+
+# on first hit, display our variables of interest
+display fifo->rd_idx
+display fifo->wr_idx
+display fifo->empty 
+display fifo->full
+display fifo->level
