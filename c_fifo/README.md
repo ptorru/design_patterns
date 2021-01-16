@@ -29,20 +29,4 @@ After a while you may realize that you would like your breakpoints or variables 
 gdb --command=gdb_script fifo_simple
 ```
 
-Make sure you have a gdb-script file with something like:
-
-```
-# Set a breakpoint
-break fifo_put
-
-# run the program
-r
-
-# on first hit, display our variables of interest
-display fifo->rd_idx
-display fifo->wr_idx
-display fifo->empty 
-display fifo->full
-display fifo->level
-
-```
+see our example in gdb_script.
