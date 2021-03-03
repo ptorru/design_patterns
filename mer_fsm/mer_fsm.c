@@ -66,11 +66,11 @@ void ev_number(fsm_t *self, char c)
     {
     case IDLE:
 	into_receiving(self,c);
-	return;
+	break;
     case RECEIVING:
 	into_receiving(self,c);
 	if(self->count == MAXCHAR) into_printing(self);
-	return;
+	break;
     }
 }
 
@@ -78,12 +78,21 @@ void ev_number(fsm_t *self, char c)
 int ev_other(fsm_t *self, char c_in)
 {
     into_idle(self);
-    if(c_in == 'q') return 1;
+    if(c_in == 'q')
+    {
+        return 1;
+    }
     return 0;
 }
 
+// see: https://stackoverflow.com/questions/7898215/how-to-clear-input-buffer-in-c
+void flush()
+{
+  int c;
+  while ((c = getc(stdin)) != '\n' && c != EOF) {}
+}
 
-int main()
+int main(int argc, char **argv)
 {
     char c_in;
     fsm_t fsm;
@@ -96,21 +105,27 @@ int main()
 	if(fsm.state != PRINTING)
 	{
 	    printf("$: ");
-	    scanf(" %c", &c_in);
+	    c_in = getc(stdin);
+	    flush();
 
-	    if( isdigit(c_in))
+	    if(isdigit(c_in))
 	    {
 	        ev_number(&fsm,c_in);
 	    }
 	    else
 	    {
 	        // Exit if ev_other returns 1
-	        if(ev_other(&fsm, c_in)) return 0;
+	        if(ev_other(&fsm, c_in))
+		{
+		    break;
+		}
 	    }
 	}
 	else
 	{
-	    if(into_printing(&fsm)) return 0;
+	    if(into_printing(&fsm)) break;
 	}
     }
+    printf("Bye\n");
+    return 0;
 }
