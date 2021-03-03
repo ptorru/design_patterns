@@ -104,7 +104,6 @@ int main(int argc, char **argv)
     {
 	if(fsm.state != PRINTING)
 	{
-	    printf("$: ");
 	    c_in = getc(stdin);
 	    flush();
 
@@ -126,6 +125,5 @@ int main(int argc, char **argv)
 	    if(into_printing(&fsm)) break;
 	}
     }
-    printf("Bye\n");
     return 0;
 }
